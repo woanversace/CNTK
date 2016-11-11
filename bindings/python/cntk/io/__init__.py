@@ -61,7 +61,7 @@ class MinibatchSource(cntk_py.MinibatchSource):
     A `MinibatchSource` can be indexed by the stream name, which will return a
     :class:`MinibatchData` object that can be passed e.g. to the
     :func:`~cntk.trainer.Trainer.train_minibatch` function.
-    
+
     Args:
         deserializers ('list', default is empty): list of deserializers
          (:class:`ImageDeserializer` for now).

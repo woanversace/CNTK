@@ -104,7 +104,7 @@ void TestFrameMode()
             std::vector<double> TrainCE;
             size_t distributedAfterSampleCount = distributedAfterMB * g_minibatchSize;
 
-            auto communicator = QuantizedMPICommunicator(true, true, 32);
+            auto communicator = QuantizedMPICommunicator(true, true, 1);
             auto distributedTrainer = CreateQuantizedDataParallelDistributedTrainer(communicator, false, distributedAfterSampleCount);
             TrainSimpleDistributedFeedForwardClassifer(DeviceDescriptor::CPUDevice(), distributedTrainer, communicator->CurrentWorker().m_globalRank, &TrainCE);
 
