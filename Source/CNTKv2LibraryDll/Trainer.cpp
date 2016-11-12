@@ -288,7 +288,7 @@ namespace CNTK
         m_combinedTrainingFunction->SaveModel(modelFilePath, usinglegacyModelFormat);
         std::wstring trainerStateCheckpointFilePath = GetTrainerStateCheckpointFilePath(modelFilePath);
         auto ckpStream = GetFstream(trainerStateCheckpointFilePath, false);
-        *ckpStream << DictionaryValue(state);
+        *ckpStream << state;
         ckpStream->flush();
     }
 
@@ -299,10 +299,8 @@ namespace CNTK
 
         std::wstring trainerStateCheckpointFilePath = GetTrainerStateCheckpointFilePath(modelFilePath);
         auto ckpStream = GetFstream(trainerStateCheckpointFilePath, true);
-        DictionaryValue dictVal;
-        *ckpStream >> dictVal;
-
-        const Dictionary& checkpoint = dictVal.Value<Dictionary>();
+        Dictionary checkpoint;
+        *ckpStream >> checkpoint;
 
         m_totalSamplesSeen = checkpoint[totalSeenSamplesPropertyName].Value<size_t>();
         const DictionaryValue& learners = checkpoint[learnersPropertyName];
