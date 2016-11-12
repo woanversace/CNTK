@@ -257,10 +257,7 @@ namespace CNTK
                 newConfig.m_minibatchSizeInSamples = minibatchSizeInSamples;
                 newConfig.m_truncationSize = m_truncationLength;
 
-                // save/restore sample position around SetConfiguration to make sure no sample is skipped in prefetch
-                size_t samplePosition = m_shim->GetCurrentSamplePosition();
                 m_shim->SetConfiguration(newConfig, inputDescriptions);
-                m_shim->SetCurrentSamplePosition(samplePosition);
 
                 m_prevMinibatchSize = minibatchSizeInSamples;
             }

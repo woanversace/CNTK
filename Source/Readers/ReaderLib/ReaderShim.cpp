@@ -145,6 +145,7 @@ void ReaderShim<ElemType>::SetConfiguration(const ReaderConfiguration& config, c
     m_prefetchTask = std::async(m_launchType,
         [this, localCurrentDataTransferIndex]()
     {
+        m_reader->SetCurrentSamplePosition(m_currentSamplePosition);
         return PrefetchMinibatch(localCurrentDataTransferIndex);
     });
 }
