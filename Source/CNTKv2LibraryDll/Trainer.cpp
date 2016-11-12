@@ -277,11 +277,9 @@ namespace CNTK
         vector<DictionaryValue> learnerStates;
         for (const auto& learner : m_parameterLearners)
         {
-
             learnerStates.push_back(std::move(DictionaryValue(learner->Serialize())));
         }
 
-        // add DictionaryValue ctor that takes an rvalue!
         Dictionary state;
         state[learnersPropertyName] = learnerStates;
         state[distributedLearnerPropertyName] = distributedLearnerState;
@@ -290,7 +288,7 @@ namespace CNTK
         m_combinedTrainingFunction->SaveModel(modelFilePath, usinglegacyModelFormat);
         std::wstring trainerStateCheckpointFilePath = GetTrainerStateCheckpointFilePath(modelFilePath);
         auto ckpStream = GetFstream(trainerStateCheckpointFilePath, false);
-        *ckpStream << state;
+        *ckpStream << DictionaryValue(state);
         ckpStream->flush();
     }
 
@@ -301,8 +299,10 @@ namespace CNTK
 
         std::wstring trainerStateCheckpointFilePath = GetTrainerStateCheckpointFilePath(modelFilePath);
         auto ckpStream = GetFstream(trainerStateCheckpointFilePath, true);
-        Dictionary checkpoint;
-        *ckpStream >> checkpoint;
+        DictionaryValue dictVal;
+        *ckpStream >> dictVal;
+
+        const Dictionary& checkpoint = dictVal.Value<Dictionary>();
 
         m_totalSamplesSeen = checkpoint[totalSeenSamplesPropertyName].Value<size_t>();
         const DictionaryValue& learners = checkpoint[learnersPropertyName];
