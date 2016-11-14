@@ -55,7 +55,6 @@ void TrainSimpleDistributedFeedForwardClassifer(const DeviceDescriptor& device, 
     double learningRatePerSample = 0.02;
     minibatchSource = TextFormatMinibatchSource(L"SimpleDataTrain_cntk_text.txt", { { L"features", inputDim }, { L"labels", numOutputClasses } });
     Trainer trainer(classifierOutput, trainingLoss, prediction, { SGDLearner(classifierOutput->Parameters(), learningRatePerSample) }, distributedTrainer);
-    size_t trainingCheckpointFrequency = 100;
     if (trainCE) trainCE->clear();
     for (size_t i = 0; i < numMinibatchesToTrain; ++i)
     {
@@ -66,13 +65,6 @@ void TrainSimpleDistributedFeedForwardClassifer(const DeviceDescriptor& device, 
         if ((i % g_outputFreqInMB) == 0 && trainCE)
         {
             trainCE->push_back(trainer.PreviousMinibatchLossAverage());
-        }
-
-        if ((i % trainingCheckpointFrequency) == (trainingCheckpointFrequency - 1))
-        {
-            const wchar_t* ckpName = L"feedForward.net";
-            trainer.SaveCheckpoint(ckpName);
-            trainer.RestoreFromCheckpoint(ckpName);
         }
     }
 }
