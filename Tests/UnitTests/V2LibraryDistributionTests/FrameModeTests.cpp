@@ -52,7 +52,7 @@ void TrainSimpleDistributedFeedForwardClassifer(const DeviceDescriptor& device, 
     auto trainingLoss = CNTK::CrossEntropyWithSoftmax(classifierOutput, labels, L"lossFunction");;
     auto prediction = CNTK::ClassificationError(classifierOutput, labels, L"classificationError");
 
-    double learningRatePerSample = 0.02;
+    auto learningRatePerSample = LearningRatePerSampleSchedule(0.02);
     minibatchSource = TextFormatMinibatchSource(L"SimpleDataTrain_cntk_text.txt", { { L"features", inputDim }, { L"labels", numOutputClasses } });
     Trainer trainer(classifierOutput, trainingLoss, prediction, { SGDLearner(classifierOutput->Parameters(), learningRatePerSample) }, distributedTrainer);
     if (trainCE) trainCE->clear();
