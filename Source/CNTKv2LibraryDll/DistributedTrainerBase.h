@@ -32,6 +32,7 @@ namespace CNTK
 
     protected:
         explicit DistributedTrainerBase(DistributedCommunicatorPtr communicator);
+        Dictionary CreateCheckpointImpl(const Dictionary& localStateToShare);
 
         DistributedCommunicatorPtr m_communicator;
     };

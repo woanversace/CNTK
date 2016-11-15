@@ -22,6 +22,11 @@ namespace CNTK
     // Get checkpoint state associated with distributed trainer
     Dictionary DistributedTrainerBase::CreateCheckpoint(const Trainer&, const Dictionary& localStateToShare)
     {
+        return CreateCheckpointImpl(localStateToShare);
+    }
+
+    Dictionary DistributedTrainerBase::CreateCheckpointImpl(const Dictionary& localStateToShare)
+    {
         std::vector<DictionaryPtr> remoteState;
         m_communicator->Gather(localStateToShare, remoteState, m_communicator->Workers());
 
