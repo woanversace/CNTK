@@ -391,6 +391,7 @@ void PrintBuiltInfo()
 #ifdef _GIT_EXIST
     LOGPRINTF(stderr, "\t\tBuild Branch: %s\n", _BUILDBRANCH_);
     LOGPRINTF(stderr, "\t\tBuild SHA1: %s\n", _BUILDSHA1_);
+    LOGPRINTF(stderr, "\t\tBuild Tag: %s\n", _BUILDTAG_);
 #endif
 #ifdef _BUILDER_
     LOGPRINTF(stderr, "\t\tBuilt by %s on %s\n", _BUILDER_, _BUILDMACHINE_);
@@ -647,7 +648,7 @@ static void PrintBanner(int argc, wchar_t* argv[], const string& timestamp)
 {
     fprintf(stderr, "CNTK 2.0.beta3.0+ (");
 #ifdef _GIT_EXIST
-    fprintf(stderr, "%s %.6s, ", _BUILDBRANCH_, _BUILDSHA1_);
+    fprintf(stderr, "%s %.6s %s, ", _BUILDBRANCH_, _BUILDSHA1_, _BUILDTAG_);
 #endif
     fprintf(stderr, "%s %s", __DATE__, __TIME__); // build time
     fprintf(stderr, ") on %s at %s\n\n", GetHostName().c_str(), timestamp.c_str());
